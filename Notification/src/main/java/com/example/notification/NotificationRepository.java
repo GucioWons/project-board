@@ -25,6 +25,12 @@ public class NotificationRepository {
                 .toList();
     }
 
+    public List<Notification> getNotificationsByUserToIdAndSeen(Integer userToId, boolean seen){
+        return getNotificationsByUserToId(userToId).stream()
+                .filter(notification -> notification.isSeen() == seen)
+                .toList();
+    }
+
     public Notification save(Notification newNotification){
         notifications.stream()
                 .filter(notification -> notification.getId().equals(newNotification.getId())).findFirst()

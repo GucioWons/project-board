@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/notifications")
@@ -23,10 +24,17 @@ public class NotificationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Notification>> getNotificationsByUserToId(@RequestParam Integer userToId){
+    public ResponseEntity<List<Notification>> getNotificationsByUserToIdAndSeen(@RequestParam Integer userToId,
+                                                                         @RequestParam Optional<Boolean> seen){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(notificationService.getNotificationsByUserToId(userToId));
+                .body(getNotifications(userToId, seen));
+    }
+
+    private List<Notification> getNotifications(Integer userToId, Optional<Boolean> seen){
+        return seen
+                .map(isSeen -> notificationService.getNotificationsByUserToIdAndSeen(userToId, isSeen))
+                .orElseGet(() -> notificationService.getNotificationsByUserToId(userToId));
     }
 
     @PostMapping("/setseen")

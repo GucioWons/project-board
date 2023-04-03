@@ -25,4 +25,7 @@ public class NotificationService {
         notification.setSeen(true);
         return notificationRepository.save(notification);
     }
+    public List<Notification> getNotificationsByUserToIdAndSeen(Integer userId, boolean seen){
+        return notificationRepository.getNotificationsByUserToIdAndSeen(userId, seen);
+    }
 }
