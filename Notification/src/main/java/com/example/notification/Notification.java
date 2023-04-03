@@ -9,12 +9,12 @@ public class Notification {
     private final LocalDateTime date;
     private boolean seen;
 
-    public Notification(Integer id, String text, Integer userToId, LocalDateTime date, boolean seen) {
+    public Notification(Integer id, String text, Integer userToId) {
         this.id = id;
         this.text = text;
         this.userToId = userToId;
-        this.date = date;
-        this.seen = seen;
+        this.date = LocalDateTime.now();
+        this.seen = false;
     }
 
     public Integer getId() {
