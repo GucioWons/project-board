@@ -13,11 +13,16 @@ public class NotificationService {
     }
 
     public Notification createNotification(Notification notification){
-        notificationRepository.addNotification(notification);
-        return notification;
+        return notificationRepository.save(notification);
     }
 
     public List<Notification> getNotificationsByUserToId(Integer userId){
         return notificationRepository.getNotificationsByUserToId(userId);
+    }
+
+    public Notification setNotificationSeen(Integer notificationId){
+        Notification notification = notificationRepository.getNotificationById(notificationId);
+        notification.setSeen(true);
+        return notificationRepository.save(notification);
     }
 }

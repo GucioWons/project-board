@@ -28,4 +28,11 @@ public class NotificationController {
                 .status(HttpStatus.OK)
                 .body(notificationService.getNotificationsByUserToId(userToId));
     }
+
+    @PostMapping("/setseen")
+    public ResponseEntity<Notification> setNotificationSeen(@RequestParam Integer notificationId){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(notificationService.setNotificationSeen(notificationId));
+    }
 }

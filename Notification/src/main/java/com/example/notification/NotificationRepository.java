@@ -13,19 +13,23 @@ public class NotificationRepository {
         this.notifications = new ArrayList<>();
     }
 
-    public void addNotification(Notification notification){
-        notifications.add(notification);
-    }
-
     public Notification getNotificationById(Integer id){
         return notifications.stream()
-                .filter(notification -> notification.getId() == id).findFirst()
+                .filter(notification -> notification.getId().equals(id)).findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
 
     public List<Notification> getNotificationsByUserToId(Integer userToId){
         return notifications.stream()
-                .filter(notification -> notification.getUserToId() == userToId)
+                .filter(notification -> notification.getUserToId().equals(userToId))
                 .toList();
+    }
+
+    public Notification save(Notification newNotification){
+        notifications.stream()
+                .filter(notification -> notification.getId().equals(newNotification.getId())).findFirst()
+                .ifPresent(notifications::remove);
+        notifications.add(newNotification);
+        return newNotification;
     }
 }
