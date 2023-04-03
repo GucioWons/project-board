@@ -14,10 +14,8 @@ public interface CrewRepository extends JpaRepository<Crew,Long> {
 
     @Override
     List<Crew> findAll();
-
     @Override
     Optional<Crew> findById(Long id);
 
-    Optional<Crew> findByName(String name);
 
 }

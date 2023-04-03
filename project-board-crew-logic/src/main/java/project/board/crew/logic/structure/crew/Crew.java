@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import lombok.Setter;
+import project.board.crew.logic.structure.user.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 
 @Entity
@@ -24,6 +26,8 @@ public class Crew {
 
     private String name;
 
+    @ManyToMany
+    List<User> users;
 
     public Crew() {}
 

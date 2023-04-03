@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.board.crew.logic.structure.user.User;
 
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class CrewController {
     {
        return ResponseEntity
                .status(HttpStatus.OK)
-               .body(crewService.getAllCrews());
+               .body(crewService.getCrews());
     }
 
     @PostMapping(value = "/read-crew", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,6 +42,24 @@ public class CrewController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(crewService.add(crew));
+    }
+
+    @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Crew> deleteCrew(@ModelAttribute Crew crew)
+    {
+        crewService.delete(crew);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(crewService.getCrew(crew));
+    }
+
+    @PostMapping(value = "/add-user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Crew> assignUser(@ModelAttribute Crew crew, @ModelAttribute User user)
+    {
+        crewService.assignUser(crew,user);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(crewService.getCrew(crew));
     }
 
 }
