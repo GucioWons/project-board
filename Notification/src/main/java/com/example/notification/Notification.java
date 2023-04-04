@@ -1,18 +1,23 @@
 package com.example.notification;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Notification {
-    private final Integer id;
-    private final String text;
-    private final Integer userToId;
-    private final LocalDateTime date;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String text;
+    private Integer userToId;
+    private LocalDateTime date;
     private boolean seen;
 
-    public Notification(Integer id, String text, Integer userToId) {
-        this.id = id;
-        this.text = text;
-        this.userToId = userToId;
+    public Notification() {
         this.date = LocalDateTime.now();
         this.seen = false;
     }

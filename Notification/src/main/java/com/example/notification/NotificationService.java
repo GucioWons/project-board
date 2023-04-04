@@ -17,15 +17,21 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsByUserToId(Integer userId){
-        return notificationRepository.getNotificationsByUserToId(userId);
+        return notificationRepository.findByUserToId(userId);
+    }
+
+    public List<Notification> getNotificationsByUserToIdAndSeen(Integer userId, boolean seen){
+        return notificationRepository.findAllByUserToIdAndSeen(userId, seen);
     }
 
     public Notification setNotificationSeen(Integer notificationId){
-        Notification notification = notificationRepository.getNotificationById(notificationId);
+        return notificationRepository.findById(notificationId)
+                .map(this::updateNotificationSeen)
+                .orElseThrow(() -> new IllegalArgumentException("Wrong notification id!"));
+    }
+
+    private Notification updateNotificationSeen(Notification notification){
         notification.setSeen(true);
         return notificationRepository.save(notification);
-    }
-    public List<Notification> getNotificationsByUserToIdAndSeen(Integer userId, boolean seen){
-        return notificationRepository.getNotificationsByUserToIdAndSeen(userId, seen);
     }
 }
