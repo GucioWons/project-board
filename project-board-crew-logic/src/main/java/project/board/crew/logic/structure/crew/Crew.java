@@ -32,7 +32,7 @@ public class Crew {
     List<Users> users;
 
     @ManyToMany
-    List<CrewCategories> categories;
+    List<CrewCategories> crewCategories;
 
     public Crew() {}
 

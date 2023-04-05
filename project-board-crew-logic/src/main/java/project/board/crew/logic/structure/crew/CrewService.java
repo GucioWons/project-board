@@ -30,7 +30,7 @@ private final CrewRepository crewRepository;
 
     public List<CrewCategories> getCategories(Crew crew)
     {
-        return crew.getCategories();
+        return crew.getCrewCategories();
     }
 
     public void assignUser(Crew crew, Users user)
@@ -48,10 +48,10 @@ private final CrewRepository crewRepository;
     public void assignCategory(Crew crew, CrewCategories crewCategories)
     {
         Optional<Crew> updateCrew = crewRepository.findById(crew.getId());
-        boolean categoriesStream = updateCrew.get().getCategories().stream().anyMatch(g -> g.getCategoryId().equals(crewCategories.getCategoryId()));
+        boolean categoriesStream = updateCrew.get().getCrewCategories().stream().anyMatch(g -> g.getCategoryId().equals(crewCategories.getCategoryId()));
         if(!categoriesStream)
         {
-            updateCrew.get().getCategories().add(crewCategories);
+            updateCrew.get().getCrewCategories().add(crewCategories);
             crewRepository.save(updateCrew.get());
         }
         else throw new IllegalArgumentException();
