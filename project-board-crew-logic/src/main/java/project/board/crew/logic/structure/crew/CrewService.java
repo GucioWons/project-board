@@ -1,9 +1,7 @@
 package project.board.crew.logic.structure.crew;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.board.crew.logic.structure.user.User;
+import project.board.crew.logic.structure.user.Users;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -25,17 +23,21 @@ private final CrewRepository crewRepository;
         return crewRepository.findAll();
     }
 
-    public List<User> getUsers(Crew crew)
+    public List<Users> getUsers(Crew crew)
     {
         return crew.getUsers();
     }
 
-    public void assignUser(Crew crew, User user)
+    public void assignUser(Crew crew, Users user)
     {
-        if(crew.getUsers().contains(user))
-            throw new IllegalArgumentException();
-        else crew.getUsers().add(user);
-        crewRepository.save(crew);
+        Optional<Crew> updateCrew = crewRepository.findById(crew.getId());
+        boolean usersStream = updateCrew.get().getUsers().stream().anyMatch(g -> g.getUserId().equals(user.getUserId()));
+        if(!usersStream)
+        {
+            updateCrew.get().getUsers().add(user);
+            crewRepository.save(updateCrew.get());
+        }
+        else throw new IllegalArgumentException();
     }
 
     public Crew getCrew(Crew crew)

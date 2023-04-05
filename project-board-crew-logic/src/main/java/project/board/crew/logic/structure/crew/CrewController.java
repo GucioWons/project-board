@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.board.crew.logic.structure.user.User;
+import project.board.crew.logic.structure.user.Users;
 
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class CrewController {
     }
 
     @PostMapping(value = "/add-user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> assignUser(@ModelAttribute Crew crew, @ModelAttribute User user)
+    public ResponseEntity<Crew> assignUser(@ModelAttribute Crew crew, @ModelAttribute Users user)
     {
         crewService.assignUser(crew,user);
         return ResponseEntity
