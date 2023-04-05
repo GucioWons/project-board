@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.board.crew.logic.structure.categories.CrewCategories;
 import project.board.crew.logic.structure.user.Users;
 
 
@@ -57,6 +58,15 @@ public class CrewController {
     public ResponseEntity<Crew> assignUser(@ModelAttribute Crew crew, @ModelAttribute Users user)
     {
         crewService.assignUser(crew,user);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(crewService.getCrew(crew));
+    }
+
+    @PostMapping(value = "/assign-category", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Crew> assignCategory(@ModelAttribute Crew crew, @ModelAttribute CrewCategories crewCategories)
+    {
+        crewService.assignCategory(crew,crewCategories);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(crewService.getCrew(crew));
