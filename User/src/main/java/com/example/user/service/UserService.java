@@ -14,8 +14,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private static final int PAGE_SIZE=10;
     public User getUserById(long id){
-        User user=userRepository.existsById(id) ? userRepository.getReferenceById(id) : null;
+        User user=userRepository.existsById(id) ? userRepository.findUserById(id) : null;
         if(user!=null){
             return user;
         }
@@ -36,13 +37,13 @@ public class UserService {
         }
     }
 
-    public void editUser(NewPass newData) {
-        User user=userRepository.existsById(newData.getUserId()) ? userRepository.getReferenceById(newData.getUserId()) : null;
+    public User editUser(NewPass newData) {
+        User user=userRepository.existsById(newData.getUserId()) ? userRepository.findUserById(newData.getUserId()) : null;
         if(user!=null){
             if(user.getPassw().equals(newData.getOldPassw())){
                 user.setEmail(newData.getEmail());
                 user.setPassw(newData.getPassw());
-                userRepository.updateEmailAndPassw(user.getEmail(), user.getPassw(), user.getId());
+                return userRepository.updateEmailAndPassw(user.getEmail(), user.getPassw(), user.getId());
             }
             else{
                 throw new ErrorSubmissionException("incorrect password");

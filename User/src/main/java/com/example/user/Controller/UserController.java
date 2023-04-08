@@ -29,8 +29,10 @@ public class UserController {
                 .body(userService.registerUser(user));
     }
     @GetMapping("/user/edit")
-    public void editUser(@RequestBody NewPass newData){
-        userService.editUser(newData);
+    public ResponseEntity<User> editUser(@RequestBody NewPass newData){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.editUser(newData));
     }
     @GetMapping("/user")
     public ResponseEntity<List<User>> getUserByData(@RequestBody String data){
