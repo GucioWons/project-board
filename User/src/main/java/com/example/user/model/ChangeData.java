@@ -1,18 +1,14 @@
 package com.example.user.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Getter
 @Setter
-public class NewPass {
-    @Id
+@Getter
+public class ChangeData {
     private long id;
-    private long userId;
     private String email;
-    private String passw;
+    private String newPassw;
     private String oldPassw;
 }
