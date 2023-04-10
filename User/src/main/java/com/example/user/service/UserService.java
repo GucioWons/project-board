@@ -5,21 +5,16 @@ import com.example.user.exceptions.ErrorSubmissionException;
 import com.example.user.model.ChangeData;
 import com.example.user.model.NewUserData;
 import com.example.user.model.User;
-import com.example.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-
-import static com.example.user.Controller.UserDtoMapper.mapToUserDtoList;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    @Autowired
     private final UserRepository userRepository;
     public User getUserById(long id){
-        User user=userRepository.existsById(id) ? userRepository.findUserById(id) : null;
+        User user=userRepository.existsById(id) ? userRepository.findById(id) : null;
         if(user!=null){
             return user;
         }
@@ -32,7 +27,7 @@ public class UserService {
         if(userData.getFirstName().isEmpty() || userData.getLastName().isEmpty() || userData.getEmail().isEmpty() || userData.getPassw().isEmpty()){
             throw new ErrorSubmissionException("Empty fields");
         }
-        else if(userRepository.existsUserByEmail(userData.getEmail()) || userRepository.existsUserByPassw((userData.getPassw()).hashCode())){
+        else if(userRepository.existsByEmail(userData.getEmail()) || userRepository.existsByPassw((userData.getPassw()).hashCode())){
             throw new ErrorSubmissionException("Email or Password already exists");
         }
         else {
@@ -46,7 +41,7 @@ public class UserService {
     }
 
     public void editUser(ChangeData changeData ) {
-        User user=userRepository.existsUserById(changeData.getId()) ? userRepository.findUserById(changeData.getId()) : null;
+        User user=userRepository.existsById(changeData.getId()) ? userRepository.findById(changeData.getId()) : null;
         if(user!=null && user.getPassw()==changeData.getOldPassw().hashCode()){
             user.setEmail(changeData.getEmail());
             user.setPassw(changeData.getNewPassw().hashCode());
@@ -58,7 +53,7 @@ public class UserService {
     }
 
     public List<User> getUserByData(String data) {
-        List<User> users=userRepository.findUserByEmailOrFirstNameOrLastName(data, data, data);
+        List<User> users=userRepository.findByEmailOrFirstNameOrLastName(data, data, data);
         if(users.isEmpty()){
             throw new ErrorSubmissionException("User not found");
         }
@@ -67,7 +62,7 @@ public class UserService {
         }
     }
 
-    public List<UserDto> getAllUsers() {
-        return mapToUserDtoList(userRepository.findAll());
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }
