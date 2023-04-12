@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
-    boolean existsByPassw(int passw);
+    boolean existsByPassw(String passw);
     List<User> findByEmailOrFirstNameOrLastName(String dataEmail, String dataFirstName, String dataLastName);
     User findById(long id);
     List<User> findAll();

@@ -2,8 +2,6 @@ package com.example.user.service;
 
 import com.example.user.Repository.UserRepository;
 import com.example.user.exceptions.ErrorSubmissionException;
-import com.example.user.model.ChangeData;
-import com.example.user.model.NewUserData;
 import com.example.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,11 +21,11 @@ public class UserService {
         }
     }
 
-    public void registerUser(NewUserData userData){
+    public void registerUser(User userData){
         if(userData.getFirstName().isEmpty() || userData.getLastName().isEmpty() || userData.getEmail().isEmpty() || userData.getPassw().isEmpty()){
             throw new ErrorSubmissionException("Empty fields");
         }
-        else if(userRepository.existsByEmail(userData.getEmail()) || userRepository.existsByPassw((userData.getPassw()).hashCode())){
+        else if(userRepository.existsByEmail(userData.getEmail()) || userRepository.existsByPassw((userData.getPassw()))){
             throw new ErrorSubmissionException("Email or Password already exists");
         }
         else {
@@ -35,16 +33,15 @@ public class UserService {
             user.setFirstName(userData.getFirstName());
             user.setLastName(userData.getLastName());
             user.setEmail(userData.getEmail());
-            user.setPassw(userData.getPassw().hashCode());
+            user.setPassw(userData.getPassw());
             userRepository.save(user);
         }
     }
 
-    public void editUser(ChangeData changeData ) {
-        User user=userRepository.existsById(changeData.getId()) ? userRepository.findById(changeData.getId()) : null;
-        if(user!=null && user.getPassw()==changeData.getOldPassw().hashCode()){
-            user.setEmail(changeData.getEmail());
-            user.setPassw(changeData.getNewPassw().hashCode());
+    public void changeEmail(long id, String passw, String newEmail) {
+        User user=userRepository.existsById(id) ? userRepository.findById(id) : null;
+        if(user!=null && user.getPassw().equals(passw)){
+            user.setEmail(newEmail);
             userRepository.save(user);
         }
         else{
@@ -52,17 +49,22 @@ public class UserService {
         }
     }
 
-    public List<User> getUserByData(String data) {
-        List<User> users=userRepository.findByEmailOrFirstNameOrLastName(data, data, data);
-        if(users.isEmpty()){
-            throw new ErrorSubmissionException("User not found");
-        }
-        else{
-            return users;
-        }
+    public List<User> getUserBySearchValue(String searchValue) {
+        return userRepository.findByEmailOrFirstNameOrLastName(searchValue, searchValue, searchValue);
     }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public void changePassw(long id, String passw, String newPassw) {
+        User user=userRepository.existsById(id) ? userRepository.findById(id) : null;
+        if(user!=null && user.getPassw().equals(passw)){
+            user.setPassw(newPassw);
+            userRepository.save(user);
+        }
+        else{
+            throw new ErrorSubmissionException("Not found user id");
+        }
     }
 }

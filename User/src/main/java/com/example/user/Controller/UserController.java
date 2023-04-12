@@ -1,7 +1,5 @@
 package com.example.user.Controller;
 
-import com.example.user.model.ChangeData;
-import com.example.user.model.NewUserData;
 import com.example.user.model.User;
 import com.example.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,29 +13,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    @GetMapping("/users")
+    @GetMapping("")
     public List<User> getAllUsers(){
         return userService.getAllUsers();
     }
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@RequestBody @PathVariable long id){
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.getUserById(id));
     }
-    @GetMapping("/user/register")
-    public void registerUser(NewUserData userData){
+    @PostMapping("/register")
+    public void registerUser(User userData){
         userService.registerUser(userData);
     }
-    @GetMapping("/user/edit")
-    public void editUser(ChangeData changeData){
-        userService.editUser(changeData);
+    @PostMapping("/changeEmail")
+    public void changeEmail(@RequestBody long id, String passw, String newEmail){
+        userService.changeEmail(id, passw, newEmail);
     }
-    @GetMapping("/user")
-    public ResponseEntity<List<User>> getUserByData(@RequestBody String data){
+    @PostMapping("/changePassw")
+    public void changePassw(@RequestBody long id, String passw, String newPassw){
+        userService.changePassw(id, passw, newPassw);
+    }
+    @GetMapping("/data")
+    public ResponseEntity<List<User>> getUserSearchValue(@RequestBody String searchValue){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.getUserByData(data));
+                .body(userService.getUserBySearchValue(searchValue));
     }
 }
