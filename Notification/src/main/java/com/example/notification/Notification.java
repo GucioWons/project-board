@@ -4,10 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,29 +24,5 @@ public class Notification {
     public Notification() {
         this.date = LocalDateTime.now();
         this.seen = false;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public Integer getUserToId() {
-        return userToId;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public boolean isSeen() {
-        return seen;
-    }
-
-    public void setSeen(boolean seen) {
-        this.seen = seen;
     }
 }

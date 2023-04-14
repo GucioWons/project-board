@@ -1,5 +1,6 @@
 package com.example.notification;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,12 +10,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/notifications")
+@RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
-
-    public NotificationController(NotificationService notificationService) {
-        this.notificationService = notificationService;
-    }
 
     @PostMapping
     public ResponseEntity<Notification> createNotification(@RequestBody Notification notification){
@@ -37,7 +35,7 @@ public class NotificationController {
                 .orElseGet(() -> notificationService.getNotificationsByUserToId(userToId));
     }
 
-    @PostMapping("/setseen")
+    @PostMapping("/set-seen")
     public ResponseEntity<Notification> setNotificationSeen(@RequestParam Integer notificationId){
         return ResponseEntity
                 .status(HttpStatus.OK)
