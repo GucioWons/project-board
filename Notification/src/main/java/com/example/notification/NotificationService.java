@@ -1,5 +1,6 @@
 package com.example.notification;
 
+import com.example.notification.exception.NoNotificationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class NotificationService {
     public Notification setNotificationSeen(Integer notificationId){
         return notificationRepository.findById(notificationId)
                 .map(this::updateNotificationSeen)
-                .orElseThrow(() -> new IllegalArgumentException("Wrong notification id!"));
+                .orElseThrow(() -> new NoNotificationException("Wrong notification id!"));
     }
 
     private Notification updateNotificationSeen(Notification notification){
