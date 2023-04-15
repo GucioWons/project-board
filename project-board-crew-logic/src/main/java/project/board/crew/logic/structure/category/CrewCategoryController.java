@@ -1,4 +1,4 @@
-package project.board.crew.logic.structure.categories;
+package project.board.crew.logic.structure.category;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,22 +9,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.board.crew.logic.structure.crew.Crew;
 
 @RestController
 @RequestMapping("/api/category")
-public class CrewCategoriesController {
+public class CrewCategoryController {
 
     @Autowired
-    private CrewCategoriesService crewCategoriesService;
+    private CrewCategoryService crewCategoryService;
 
 
     @PostMapping(value = "/new", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CrewCategories> createCategory(@ModelAttribute CrewCategories category)
+    public ResponseEntity<CrewCategory> createCategory(@ModelAttribute CrewCategory category)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(crewCategoriesService.add(category));
+                .body(crewCategoryService.add(category));
     }
 
 }

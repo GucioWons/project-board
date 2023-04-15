@@ -7,13 +7,12 @@ import lombok.Getter;
 
 import lombok.Setter;
 
-import project.board.crew.logic.structure.categories.CrewCategories;
+import project.board.crew.logic.structure.category.CrewCategory;
 import project.board.crew.logic.structure.user.Users;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -32,7 +31,8 @@ public class Crew {
     List<Users> users;
 
     @ManyToMany
-    List<CrewCategories> crewCategories;
+    List<CrewCategory> crewCategories;
+
 
     public Crew() {}
 

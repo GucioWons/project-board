@@ -1,4 +1,4 @@
-package project.board.crew.logic.structure.categories;
+package project.board.crew.logic.structure.category;
 
 
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CrewCategories {
+public class CrewCategory {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -21,5 +21,5 @@ public class CrewCategories {
 
     private String categoryName;
 
-    public CrewCategories(){}
+    public CrewCategory(){}
 }

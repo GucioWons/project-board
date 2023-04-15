@@ -24,6 +24,8 @@
     <modules>
         <module>project-board-crew-logic</module>
         <module>project-board-crew-k8s</module>
+        <module>User</module>
+        <module>Notification</module>
     </modules>
     <dependencies>
         <dependency>

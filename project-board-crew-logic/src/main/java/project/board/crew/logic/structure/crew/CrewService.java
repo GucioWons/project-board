@@ -1,7 +1,6 @@
 package project.board.crew.logic.structure.crew;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.board.crew.logic.structure.categories.CrewCategories;
+import project.board.crew.logic.structure.category.CrewCategory;
 import project.board.crew.logic.structure.user.Users;
 
 
@@ -28,10 +27,12 @@ private final CrewRepository crewRepository;
         return crew.getUsers();
     }
 
-    public List<CrewCategories> getCategories(Crew crew)
+    public List<CrewCategory> getCategories(Crew crew)
     {
         return crew.getCrewCategories();
     }
+
+
 
     public void assignUser(Crew crew, Users user)
     {
@@ -45,13 +46,13 @@ private final CrewRepository crewRepository;
         else throw new IllegalArgumentException();
     }
 
-    public void assignCategory(Crew crew, CrewCategories crewCategories)
+    public void assignCategory(Crew crew, CrewCategory crewCategory)
     {
         Optional<Crew> updateCrew = crewRepository.findById(crew.getId());
-        boolean categoriesStream = updateCrew.get().getCrewCategories().stream().anyMatch(g -> g.getCategoryId().equals(crewCategories.getCategoryId()));
+        boolean categoriesStream = updateCrew.get().getCrewCategories().stream().anyMatch(g -> g.getCategoryId().equals(crewCategory.getCategoryId()));
         if(!categoriesStream)
         {
-            updateCrew.get().getCrewCategories().add(crewCategories);
+            updateCrew.get().getCrewCategories().add(crewCategory);
             crewRepository.save(updateCrew.get());
         }
         else throw new IllegalArgumentException();
