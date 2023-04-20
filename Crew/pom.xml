@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>org.example</groupId>
+    <groupId>project.board.crew</groupId>
     <artifactId>Crew</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Crew</name>
