@@ -8,7 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.board.crew.logic.structure.category.CrewCategory;
-import project.board.crew.logic.structure.user.Users;
+import project.board.crew.logic.structure.member.Member;
+
 
 
 import java.util.List;
@@ -54,10 +55,10 @@ public class CrewController {
                 .body(crewService.getCrew(crew));
     }
 
-    @PostMapping(value = "/add-user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> assignUser(@ModelAttribute Crew crew, @ModelAttribute Users user)
+    @PostMapping(value = "/add-member", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Crew> assignUser(@ModelAttribute Crew crew, @ModelAttribute Member member)
     {
-        crewService.assignUser(crew,user);
+        crewService.assignUser(crew,member);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(crewService.getCrew(crew));

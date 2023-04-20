@@ -8,7 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import project.board.crew.logic.structure.category.CrewCategory;
-import project.board.crew.logic.structure.user.Users;
+import project.board.crew.logic.structure.member.Member;
+
 
 
 import javax.persistence.*;
@@ -23,12 +24,13 @@ import java.util.List;
 public class Crew {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
     @ManyToMany
-    List<Users> users;
+    List<Member> members;
 
     @ManyToMany
     List<CrewCategory> crewCategories;

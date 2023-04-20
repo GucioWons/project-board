@@ -1,7 +1,8 @@
 package project.board.crew.logic.structure.crew;
 import org.springframework.stereotype.Service;
 import project.board.crew.logic.structure.category.CrewCategory;
-import project.board.crew.logic.structure.user.Users;
+import project.board.crew.logic.structure.member.Member;
+
 
 
 import java.util.List;
@@ -22,9 +23,9 @@ private final CrewRepository crewRepository;
         return crewRepository.findAll();
     }
 
-    public List<Users> getUsers(Crew crew)
+    public List<Member> getMembers(Crew crew)
     {
-        return crew.getUsers();
+        return crew.getMembers();
     }
 
     public List<CrewCategory> getCategories(Crew crew)
@@ -32,15 +33,13 @@ private final CrewRepository crewRepository;
         return crew.getCrewCategories();
     }
 
-
-
-    public void assignUser(Crew crew, Users user)
+    public void assignUser(Crew crew, Member member)
     {
         Optional<Crew> updateCrew = crewRepository.findById(crew.getId());
-        boolean usersStream = updateCrew.get().getUsers().stream().anyMatch(g -> g.getUserId().equals(user.getUserId()));
+        boolean usersStream = updateCrew.get().getMembers().stream().anyMatch(g -> g.getMemberId().equals(member.getMemberId()));
         if(!usersStream)
         {
-            updateCrew.get().getUsers().add(user);
+            updateCrew.get().getMembers().add(member);
             crewRepository.save(updateCrew.get());
         }
         else throw new IllegalArgumentException();

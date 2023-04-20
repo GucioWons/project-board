@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CrewCategoryController {
 
     @Autowired
-    private CrewCategoryService crewCategoryService;
-
+    CrewCategoryService crewCategoryService;
 
     @PostMapping(value = "/new", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CrewCategory> createCategory(@ModelAttribute CrewCategory category)
