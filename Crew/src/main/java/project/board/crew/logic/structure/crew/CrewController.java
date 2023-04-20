@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/crew")
+@RequestMapping("/api/crews")
 public class CrewController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class CrewController {
     public ResponseEntity<Crew> createCrew(@ModelAttribute Crew crew)
     {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(crewService.add(crew));
     }
 

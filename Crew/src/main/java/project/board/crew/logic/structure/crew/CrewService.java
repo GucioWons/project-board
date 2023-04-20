@@ -68,15 +68,11 @@ private final CrewRepository crewRepository;
 
     public Crew add(Crew crew)
     {
-        if (crewRepository.existsById(crew.getId()))
-            throw new IllegalArgumentException();
         return crewRepository.save(crew);
     }
 
     public void delete(Crew crew)
     {
-        if (crewRepository.existsById(crew.getId()))
-                crewRepository.delete(crew);
-        else throw new IllegalArgumentException();
+        crewRepository.delete(crew);
     }
 }

@@ -15,8 +15,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class CrewCategory {
 
-    @Id
-    @Column(name = "id", nullable = false)
+     @Id
     private Long categoryId;
 
     private String categoryName;

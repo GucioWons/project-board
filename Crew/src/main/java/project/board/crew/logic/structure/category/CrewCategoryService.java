@@ -13,8 +13,6 @@ public class CrewCategoryService {
 
     public CrewCategory add(CrewCategory crewCategory)
     {
-        if (crewCategoryRepository.existsById(crewCategory.getCategoryId()))
-            throw new IllegalArgumentException();
         return crewCategoryRepository.save(crewCategory);
     }
 }

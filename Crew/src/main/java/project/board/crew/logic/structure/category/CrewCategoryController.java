@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api/categories")
 public class CrewCategoryController {
 
     @Autowired
@@ -22,7 +22,7 @@ public class CrewCategoryController {
     public ResponseEntity<CrewCategory> createCategory(@ModelAttribute CrewCategory category)
     {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(crewCategoryService.add(category));
     }
 
