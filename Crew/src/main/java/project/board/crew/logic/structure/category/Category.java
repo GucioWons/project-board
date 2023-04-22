@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CrewCategory {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,5 +19,5 @@ public class CrewCategory {
 
     private String categoryName;
 
-    public CrewCategory(){}
+    public Category(){}
 }

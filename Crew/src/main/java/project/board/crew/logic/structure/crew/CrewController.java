@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.board.crew.logic.structure.category.CrewCategory;
+import project.board.crew.logic.structure.category.Category;
 import project.board.crew.logic.structure.member.Member;
 
 
@@ -30,47 +30,68 @@ public class CrewController {
                .body(crewService.getCrews());
     }
 
-    @PostMapping(value = "/read-crew", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> getCrew(@ModelAttribute Crew crew)
+    @GetMapping(value = "/crew-members", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Member>> getCrewMembers(@RequestParam Long crewId)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(crewService.getCrew(crew));
+                .body(crewService.getMembers(crewId));
     }
 
-    @PostMapping(value = "/new", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/crew-categories", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Category>> getCrewCategories(@RequestParam Long crewId)
+    {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(crewService.getCategories(crewId));
+    }
+
+    @GetMapping(value = "/id/{crewId}")
+    public ResponseEntity<Crew> getCrewById(@PathVariable Long crewId)
+    {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(crewService.getCrewById(crewId));
+    }
+
+    @GetMapping(value = "/name/{crewName}")
+    public ResponseEntity<Crew> getCrewByName(@PathVariable String crewName)
+    {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(crewService.getCrewByName(crewName));
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Crew> createCrew(@ModelAttribute Crew crew)
     {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(crewService.add(crew));
+                .body(crewService.create(crew));
     }
 
-    @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> deleteCrew(@ModelAttribute Crew crew)
+    @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Crew> deleteCrew(@RequestParam Long crewId)
     {
-        crewService.delete(crew);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(crewService.getCrew(crew));
+                .body(crewService.delete(crewId));
+
     }
 
-    @PostMapping(value = "/add-member", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> assignUser(@ModelAttribute Crew crew, @ModelAttribute Member member)
+    @PostMapping(value = "/assign-member", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Crew> assignMember(@RequestParam String crewName, @RequestParam String memberName)
     {
-        crewService.assignUser(crew,member);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(crewService.getCrew(crew));
+                .body(crewService.assignMember(crewName,memberName));
     }
 
     @PostMapping(value = "/assign-category", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> assignCategory(@ModelAttribute Crew crew, @ModelAttribute CrewCategory crewCategory)
+    public ResponseEntity<Crew> assignCategory(@RequestParam String crewName, @RequestParam Long categoryId)
     {
-        crewService.assignCategory(crew, crewCategory);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(crewService.getCrew(crew));
+                .body(crewService.assignCategory(crewName,categoryId));
     }
-
 }

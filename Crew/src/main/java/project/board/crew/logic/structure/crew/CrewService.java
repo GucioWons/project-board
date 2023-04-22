@@ -1,77 +1,95 @@
 package project.board.crew.logic.structure.crew;
 import org.springframework.stereotype.Service;
-import project.board.crew.logic.structure.category.CrewCategory;
+import project.board.crew.logic.structure.category.Category;
+import project.board.crew.logic.structure.category.CategoryService;
 import project.board.crew.logic.structure.member.Member;
-
+import project.board.crew.logic.structure.member.MemberService;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CrewService {
 
+    private final CrewRepository crewRepository;
 
-private final CrewRepository crewRepository;
+    private final MemberService memberService;
 
-    public CrewService(CrewRepository crewRepository) {
+    private final CategoryService categoryService;
+
+    public CrewService(CrewRepository crewRepository, MemberService memberService, CategoryService categoryService) {
         this.crewRepository = crewRepository;
+        this.memberService = memberService;
+        this.categoryService = categoryService;
     }
 
-    public List<Crew> getCrews()
-    {
+    public List<Crew> getCrews() {
         return crewRepository.findAll();
     }
 
-    public List<Member> getMembers(Crew crew)
-    {
-        return crew.getMembers();
+    public List<Member> getMembers(Long crewId) {
+        return crewRepository.findById(crewId).map(
+                Crew::getMembers
+        ).orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
 
-    public List<CrewCategory> getCategories(Crew crew)
-    {
-        return crew.getCrewCategories();
+    public List<Category> getCategories(Long crewId) {
+        return crewRepository.findById(crewId).map(
+                Crew::getCategories
+        ).orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
 
-    public void assignUser(Crew crew, Member member)
-    {
-        Optional<Crew> updateCrew = crewRepository.findById(crew.getId());
-        boolean usersStream = updateCrew.get().getMembers().stream().anyMatch(g -> g.getMemberId().equals(member.getMemberId()));
-        if(!usersStream)
-        {
-            updateCrew.get().getMembers().add(member);
-            crewRepository.save(updateCrew.get());
-        }
-        else throw new IllegalArgumentException();
+    public Crew assignMember(String crewName, String memberEmail) {
+        return crewRepository.findCrewByName(crewName)
+                .map(
+                    crew -> {
+                    Member member = memberService.findMemberByEmail(memberEmail);
+                    if(!crew.getMembers().contains(member))
+                        crew.getMembers().add(member);
+                    else throw new IllegalArgumentException("Member already assigned");
+                    return crewRepository.save(crew);
+                    }
+                ).orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
 
-    public void assignCategory(Crew crew, CrewCategory crewCategory)
-    {
-        Optional<Crew> updateCrew = crewRepository.findById(crew.getId());
-        boolean categoriesStream = updateCrew.get().getCrewCategories().stream().anyMatch(g -> g.getCategoryId().equals(crewCategory.getCategoryId()));
-        if(!categoriesStream)
-        {
-            updateCrew.get().getCrewCategories().add(crewCategory);
-            crewRepository.save(updateCrew.get());
-        }
-        else throw new IllegalArgumentException();
+
+    public Crew assignCategory(String crewName, Long categoryId) {
+        return crewRepository.findCrewByName(crewName)
+                .map(
+                        crew -> {
+                            Category category = categoryService.findCategoryById(categoryId);
+                            if(!crew.getCategories().contains(category))
+                                crew.getCategories().add(category);
+                            else throw new IllegalArgumentException("Category already assigned");
+                            return crewRepository.save(crew);
+                        }
+                ).orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
 
-    public Crew getCrew(Crew crew)
+
+    public Crew getCrewById(Long crewId)
     {
-        return getCrews().stream().filter(g -> g.getName().equals(crew.getName())
-                || g.getId().equals(crew.getId()))
-                .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+        return crewRepository.findById(crewId)
+                .orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
 
-    public Crew add(Crew crew)
+    public Crew getCrewByName(String crewName)
+    {
+        return crewRepository.findCrewByName(crewName)
+                .orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
+    }
+
+    public Crew create(Crew crew)
     {
         return crewRepository.save(crew);
     }
 
-    public void delete(Crew crew)
+    public Crew delete(Long crewId)
     {
-        crewRepository.delete(crew);
+        return crewRepository.findById(crewId)
+                .map(crew -> {
+                    crewRepository.delete(crew);
+                    return crew;
+                }).orElseThrow(IllegalArgumentException::new);
     }
 }

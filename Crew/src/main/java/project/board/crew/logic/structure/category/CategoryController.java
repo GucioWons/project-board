@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/categories")
-public class CrewCategoryController {
+public class CategoryController {
 
     @Autowired
-    CrewCategoryService crewCategoryService;
+    CategoryService categoryService;
 
-    @PostMapping(value = "/new", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CrewCategory> createCategory(@ModelAttribute CrewCategory category)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Category> createCategory(@ModelAttribute Category category)
     {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(crewCategoryService.add(category));
+                .body(categoryService.create(category));
     }
 
 }

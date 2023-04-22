@@ -11,8 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface CrewRepository extends JpaRepository<Crew,Long> {
-
-    Optional<Crew> existsByName(String name);
-
-
+    Optional<Crew> findCrewByName(String name);
 }

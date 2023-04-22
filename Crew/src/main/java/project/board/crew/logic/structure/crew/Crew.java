@@ -7,7 +7,7 @@ import lombok.Getter;
 
 import lombok.Setter;
 
-import project.board.crew.logic.structure.category.CrewCategory;
+import project.board.crew.logic.structure.category.Category;
 import project.board.crew.logic.structure.member.Member;
 
 
@@ -33,7 +33,7 @@ public class Crew {
     List<Member> members;
 
     @ManyToMany
-    List<CrewCategory> crewCategories;
+    List<Category> categories;
 
 
     public Crew() {}
