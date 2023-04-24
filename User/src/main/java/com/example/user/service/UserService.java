@@ -1,70 +1,90 @@
 package com.example.user.service;
 
+import com.example.user.Controller.UserDtoConvertion;
 import com.example.user.Repository.UserRepository;
 import com.example.user.exceptions.ErrorSubmissionException;
+import com.example.user.model.ChangeDataDto;
+import com.example.user.model.CredentialsDto;
 import com.example.user.model.User;
+import com.example.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    public User getUserById(long id){
-        User user=userRepository.existsById(id) ? userRepository.findById(id) : null;
+    public UserDto getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {;
+            return UserDtoConvertion.mapToDto(user.get());
+        } else {
+            throw new ErrorSubmissionException("Not found user id");
+        }
+    }
+
+    public UserDto changeEmail(ChangeDataDto dataDto) {
+        Optional<User> user = userRepository.findById(dataDto.getId());
+        if (user.isPresent() && BCrypt.checkpw(dataDto.getOldData(), user.get().getPassw())) {
+            user.get().setEmail(dataDto.getNewData());
+            userRepository.save(user.get());
+            return UserDtoConvertion.mapToDto(user.get());
+        } else {
+            throw new ErrorSubmissionException("Not found user id");
+        }
+    }
+
+    public List<UserDto> getUserBySearchValue(String searchValue) {
+        Set<User> users=userRepository.findUserByEmailOrFirstNameOrLastName(
+                searchValue, searchValue, searchValue);
+        return UserDtoConvertion.mapToListDto(users.stream().toList());
+    }
+
+    public List<UserDto> getAllUsers() {
+        List<User> users=userRepository.findAll();
+        return UserDtoConvertion.mapToListDto(users);
+    }
+
+    public UserDto changePassw(ChangeDataDto dataDto) {
+        Optional<User> user=userRepository.findById(dataDto.getId());
+        if(user.isPresent() && BCrypt.checkpw(dataDto.getOldData(), user.get().getPassw())){
+            user.get().setPassw(dataDto.getNewData());
+            userRepository.save(user.get());
+            return UserDtoConvertion.mapToDto(user.get());
+        }
+        else{
+            throw new ErrorSubmissionException("Not found user id");
+        }
+    }
+
+    public UserDto register(User newUserData) {
+        String hashedPassw=BCrypt.hashpw(newUserData.getPassw(), BCrypt.gensalt());
+        if(userRepository.existsByEmail(newUserData.getEmail())){
+            throw new ErrorSubmissionException("Email address is already exists");
+        }
+        else{
+            newUserData.setActive(true);
+            newUserData.setPassw(hashedPassw);
+            userRepository.save(newUserData);
+            return UserDtoConvertion.mapToDto(newUserData);
+        }
+    }
+
+    public UserDto login(CredentialsDto credentialsDto) {
+        User user = userRepository.existsByEmail(credentialsDto.getEmail()) ? userRepository.findByEmail(credentialsDto.getEmail()) : null;
         if(user!=null){
-            return user;
+            if(BCrypt.checkpw(credentialsDto.getPassw(), user.getPassw())){
+               return UserDtoConvertion.mapToDto(user);
+            }
+            else{
+                throw new ErrorSubmissionException("Wrong email or password");
+            }
         }
         else{
-            throw new ErrorSubmissionException("Not found user id");
-        }
-    }
-
-    public void registerUser(User userData){
-        if(userData.getFirstName().isEmpty() || userData.getLastName().isEmpty() || userData.getEmail().isEmpty() || userData.getPassw().isEmpty()){
-            throw new ErrorSubmissionException("Empty fields");
-        }
-        else if(userRepository.existsByEmail(userData.getEmail()) || userRepository.existsByPassw((userData.getPassw()))){
-            throw new ErrorSubmissionException("Email or Password already exists");
-        }
-        else {
-            User user=new User();
-            user.setFirstName(userData.getFirstName());
-            user.setLastName(userData.getLastName());
-            user.setEmail(userData.getEmail());
-            user.setPassw(userData.getPassw());
-            userRepository.save(user);
-        }
-    }
-
-    public void changeEmail(long id, String passw, String newEmail) {
-        User user=userRepository.existsById(id) ? userRepository.findById(id) : null;
-        if(user!=null && user.getPassw().equals(passw)){
-            user.setEmail(newEmail);
-            userRepository.save(user);
-        }
-        else{
-            throw new ErrorSubmissionException("Not found user id");
-        }
-    }
-
-    public List<User> getUserBySearchValue(String searchValue) {
-        return userRepository.findByEmailOrFirstNameOrLastName(searchValue, searchValue, searchValue);
-    }
-
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public void changePassw(long id, String passw, String newPassw) {
-        User user=userRepository.existsById(id) ? userRepository.findById(id) : null;
-        if(user!=null && user.getPassw().equals(passw)){
-            user.setPassw(newPassw);
-            userRepository.save(user);
-        }
-        else{
-            throw new ErrorSubmissionException("Not found user id");
+            throw new ErrorSubmissionException("User not found");
         }
     }
 }
