@@ -1,26 +1,21 @@
 package project.board.crew.logic.structure.crew;
 
-
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.board.crew.logic.structure.category.Category;
-import project.board.crew.logic.structure.member.Member;
-
-
-
 import java.util.List;
-
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/crews")
 public class CrewController {
-
-    @Autowired
-    private CrewService crewService;
+    private final CrewService crewService;
+    public CrewController(CrewService crewService)
+    {
+        this.crewService = crewService;
+    }
 
     @GetMapping()
     public ResponseEntity<List<Crew>> getCrewsList()
@@ -31,7 +26,7 @@ public class CrewController {
     }
 
     @GetMapping(value = "/crew-members", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Member>> getCrewMembers(@RequestParam Long crewId)
+    public ResponseEntity<Set<Integer>> getCrewMembers(@RequestParam Long crewId)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -39,7 +34,7 @@ public class CrewController {
     }
 
     @GetMapping(value = "/crew-categories", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Category>> getCrewCategories(@RequestParam Long crewId)
+    public ResponseEntity<Set<Category>> getCrewCategories(@RequestParam Long crewId)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -71,7 +66,7 @@ public class CrewController {
     }
 
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> deleteCrew(@RequestParam Long crewId)
+    public ResponseEntity<Boolean> deleteCrew(@RequestParam Long crewId)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -80,11 +75,11 @@ public class CrewController {
     }
 
     @PostMapping(value = "/assign-member", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> assignMember(@RequestParam String crewName, @RequestParam String memberName)
+    public ResponseEntity<Crew> assignMember(@RequestParam String crewName, @RequestParam Integer memberId)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(crewService.assignMember(crewName,memberName));
+                .body(crewService.assignMember(crewName,memberId));
     }
 
     @PostMapping(value = "/assign-category", produces = MediaType.APPLICATION_JSON_VALUE)

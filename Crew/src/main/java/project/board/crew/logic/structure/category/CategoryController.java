@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
+    private final CategoryService categoryService;
 
-    @Autowired
-    CategoryService categoryService;
+    public CategoryController(CategoryService categoryService)
+    {
+        this.categoryService = categoryService;
+    }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Category> createCategory(@ModelAttribute Category category)
