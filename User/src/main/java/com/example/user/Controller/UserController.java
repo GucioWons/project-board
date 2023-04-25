@@ -1,8 +1,7 @@
 package com.example.user.Controller;
 
-import com.example.user.model.ChangeDataDto;
 import com.example.user.model.CredentialsDto;
-import com.example.user.model.User;
+import com.example.user.model.RegistrationDto;
 import com.example.user.model.UserDto;
 import com.example.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,16 +31,18 @@ public class UserController {
                 .body(userService.getUserById(id));
     }
     @PutMapping("/changeEmail")
-    public ResponseEntity<UserDto> changeEmail(@RequestBody ChangeDataDto dataDto){
+    public ResponseEntity<UserDto> changeEmail(@RequestParam long id, @RequestParam String passw,
+                                               @RequestParam String newEmail){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.changeEmail(dataDto));
+                .body(userService.changeEmail(id, passw, newEmail));
     }
     @PutMapping("/changePassw")
-    public ResponseEntity<UserDto> changePassw(@RequestBody ChangeDataDto dataDto){
+    public ResponseEntity<UserDto> changePassw(@RequestParam long id, @RequestParam String passw,
+                                               @RequestParam String newPassw){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.changePassw(dataDto));
+                .body(userService.changePassw(id, passw, newPassw));
     }
     @GetMapping("/searchValue")
     public ResponseEntity<List<UserDto>> getUserBySearchValue(@RequestParam String searchValue){
@@ -50,10 +51,10 @@ public class UserController {
                 .body(userService.getUserBySearchValue(searchValue));
     }
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody User user){
+    public ResponseEntity<UserDto> register(@RequestBody RegistrationDto registrationDto){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userService.register(user));
+                .body(userService.register(registrationDto));
     }
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody CredentialsDto credentialsDto){
