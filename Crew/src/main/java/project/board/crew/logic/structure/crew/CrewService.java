@@ -20,43 +20,41 @@ public class CrewService {
         return crewRepository.findAll();
     }
 
-    public Set<Integer> getMembers(Long crewId) {
+    public Set<Integer> getMembers(Integer crewId) {
         return crewRepository.findById(crewId).map(
                 Crew::getMembers
         ).orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
 
-    public Set<Category> getCategories(Long crewId) {
+    public Set<Category> getCategories(Integer crewId) {
         return crewRepository.findById(crewId).map(
                 Crew::getCategories
         ).orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
 
-    public Crew assignMember(String crewName, Integer memberId) {
-        return crewRepository.findCrewByName(crewName).map(crew -> {
+    public Crew assignMember(Integer crewId, Integer memberId) {
+        return crewRepository.findById(crewId).map(crew -> {
                     crew.getMembers().add(memberId);
                     return crewRepository.save(crew);
                 }).orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
 
     }
 
-    public Crew assignCategory(String crewName, Long categoryId) {
-        return crewRepository.findCrewByName(crewName).map(crew -> {
-                            Category category = categoryService.findCategoryById(categoryId);
-                            crew.getCategories().add(category);
+    public Crew assignCategory(Integer crewId, Long categoryId) {
+        return crewRepository.findById(crewId).map(crew -> {
+                            crew.getCategories().add(categoryService.findCategoryById(categoryId));
                             return crewRepository.save(crew);
                         }
                 ).orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
 
-    public Crew getCrewById(Long crewId)
+    public Crew getCrewById(Integer crewId)
     {
         return crewRepository.findById(crewId)
                 .orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
 
-    public Crew getCrewByName(String crewName)
-    {
+    public Crew getCrewByName(String crewName) {
         return crewRepository.findCrewByName(crewName)
                 .orElseThrow(() -> new IllegalArgumentException("Crew doesnt exist"));
     }
@@ -66,8 +64,7 @@ public class CrewService {
         return crewRepository.save(crew);
     }
 
-    public boolean delete(Long crewId)
-    {
+    public boolean delete(Integer crewId) {
         return crewRepository.findById(crewId).map(crew -> {
                     crewRepository.delete(crew);
                     return true;

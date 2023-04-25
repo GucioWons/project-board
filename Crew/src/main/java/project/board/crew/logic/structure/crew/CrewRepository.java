@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CrewRepository extends JpaRepository<Crew,Long> {
+public interface CrewRepository extends JpaRepository<Crew,Integer> {
     Optional<Crew> findCrewByName(String name);
 }

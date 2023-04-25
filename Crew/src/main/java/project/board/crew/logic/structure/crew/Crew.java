@@ -16,7 +16,7 @@ public class Crew {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String name;
     @ManyToMany
     private Set<Category> categories;
