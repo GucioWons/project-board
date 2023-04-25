@@ -1,7 +1,7 @@
 package project.board.crew.logic.structure.category;
 
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.Setter;
 

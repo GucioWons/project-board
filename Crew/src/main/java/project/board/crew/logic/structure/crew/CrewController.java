@@ -58,7 +58,7 @@ public class CrewController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> createCrew(@ModelAttribute Crew crew)
+    public ResponseEntity<Crew> createCrew(@RequestBody Crew crew)
     {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
