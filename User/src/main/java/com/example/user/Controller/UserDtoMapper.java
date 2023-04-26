@@ -5,10 +5,11 @@ import com.example.user.model.User;
 import com.example.user.model.UserDto;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 @Component
-public class UserDtoConversion {
+public class UserDtoMapper {
     public List<UserDto> mapToListDto(List<User> users){
         return users.stream()
                 .map(this::mapToDto)
@@ -19,7 +20,6 @@ public class UserDtoConversion {
                 .firstName(user.getFirstName())
                 .lastName((user.getLastName()))
                 .email(user.getEmail())
-                .created(user.getCreated())
                 .build();
     }
     public User mapRegToUser(RegistrationDto regDto){
@@ -27,7 +27,9 @@ public class UserDtoConversion {
                 .firstName(regDto.getFirstName())
                 .lastName(regDto.getLastName())
                 .email(regDto.getEmail())
-                .created(regDto.getCreated())
+                .passw(regDto.getPassw())
+                .created(LocalDateTime.now())
+                .active(true)
                 .build();
     }
 }

@@ -24,13 +24,4 @@ public class User {
     private String passw;
     private LocalDateTime created;
     private boolean active;
-
-   /* public User(String firstName, String lastName, String email, String hashedPassw, LocalDateTime created, boolean active) {
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.email=email;
-        this.passw=hashedPassw;
-        this.created=created;
-        this.active=active;
-    }*/
 }
