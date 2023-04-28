@@ -1,11 +1,10 @@
 package com.example.user.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Objects;
 
-@Getter
-@Setter
-public class CredentialsDto {
-    private String email;
-    private String passw;
+public record CredentialsDto(String email, String passw) {
+    public CredentialsDto{
+        Objects.requireNonNull(email);
+        Objects.requireNonNull(passw);
+    }
 }

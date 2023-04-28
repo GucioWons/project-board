@@ -1,13 +1,11 @@
 package com.example.user.model;
+import java.util.Objects;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class RegistrationDto {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String passw;
+public record RegistrationDto(String firstName, String lastName, String email, String passw) {
+    public RegistrationDto{
+        Objects.requireNonNull(firstName);
+        Objects.requireNonNull(lastName);
+        Objects.requireNonNull(email);
+        Objects.requireNonNull(passw);
+    }
 }
