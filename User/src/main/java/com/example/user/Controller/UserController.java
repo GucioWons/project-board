@@ -1,9 +1,9 @@
 package com.example.user.Controller;
 
-import com.example.user.model.CredentialsDto;
-import com.example.user.model.RegistrationDto;
-import com.example.user.model.UserDto;
-import com.example.user.service.UserService;
+import com.example.user.Models.CredentialsDto;
+import com.example.user.Models.RegistrationDto;
+import com.example.user.Models.UserDto;
+import com.example.user.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,19 +33,19 @@ public class UserController {
                 .body(userService.getUserById(id));
     }
     @PutMapping("/change-email")
-    public ResponseEntity<UserDto> changeEmail(@RequestParam long id, @RequestParam String passw,
+    public ResponseEntity<UserDto> changeEmail(@RequestParam long id, @RequestParam String password,
                                                @RequestParam String newEmail){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.changeEmail(id, passw, newEmail));
+                .body(userService.changeEmail(id, password, newEmail));
     }
 
     @PutMapping("/change-passw")
-    public ResponseEntity<UserDto> changePassw(@RequestParam long id, @RequestParam String passw,
-                                               @RequestParam String newPassw){
+    public ResponseEntity<UserDto> changePassw(@RequestParam long id, @RequestParam String password,
+                                               @RequestParam String newPassword){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.changePassw(id, passw, newPassw));
+                .body(userService.changePassw(id, password, newPassword));
     }
 
     @GetMapping("/search")

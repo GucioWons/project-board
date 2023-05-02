@@ -1,4 +1,4 @@
-package com.example.user.model;
+package com.example.user.Models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -21,7 +21,7 @@ public class User {
     @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @NotEmpty(message = "Email cannot be empty")
     private String email;
-    private String passw;
+    private String password;
     private LocalDateTime created;
     private boolean active;
 }

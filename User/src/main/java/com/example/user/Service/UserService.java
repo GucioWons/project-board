@@ -1,13 +1,13 @@
-package com.example.user.service;
+package com.example.user.Service;
 
 import com.example.user.mapper.RegToUserMapper;
 import com.example.user.mapper.UserToDtoMapper;
 import com.example.user.Repository.UserRepository;
-import com.example.user.exceptions.CustomomizeException;
-import com.example.user.model.CredentialsDto;
-import com.example.user.model.RegistrationDto;
-import com.example.user.model.User;
-import com.example.user.model.UserDto;
+import com.example.user.Exceptions.CustomomizeException;
+import com.example.user.Models.CredentialsDto;
+import com.example.user.Models.RegistrationDto;
+import com.example.user.Models.User;
+import com.example.user.Models.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -24,13 +24,13 @@ public class UserService {
                 .orElseThrow(()->new CustomomizeException("Not found user id"));
     }
 
-    public UserDto changeEmail(long id, String passw, String newEmail) {
-        return userRepository.findById(id).map(user->saveNewEmail(user, passw, newEmail))
+    public UserDto changeEmail(long id, String password, String newEmail) {
+        return userRepository.findById(id).map(user->saveNewEmail(user, password, newEmail))
                 .orElseThrow(()->new CustomomizeException("User id not found"));
     }
 
-    public UserDto saveNewEmail(User user, String passw, String newEmail){
-        if(BCrypt.checkpw(passw, user.getPassw())){
+    public UserDto saveNewEmail(User user, String password, String newEmail){
+        if(BCrypt.checkpw(password, user.getPassword())){
             user.setEmail(newEmail);
             userRepository.save(user);
             return dtoMapper.mapToDto(user);
@@ -48,14 +48,14 @@ public class UserService {
         return dtoMapper.mapToListDto(userRepository.findAll());
     }
 
-    public UserDto changePassw(long id, String passw, String newPassw) {
-        return userRepository.findById(id).map(user->saveNewPassw(user, passw, newPassw))
+    public UserDto changePassw(long id, String password, String newPassword) {
+        return userRepository.findById(id).map(user->saveNewPassw(user, password, newPassword))
                 .orElseThrow(()->new CustomomizeException("User id not found"));
     }
 
-    public UserDto saveNewPassw(User user, String passw, String newPassw){
-        if(BCrypt.checkpw(passw, user.getPassw())){
-            user.setPassw(BCrypt.hashpw(newPassw, BCrypt.gensalt()));
+    public UserDto saveNewPassw(User user, String password, String newPassword){
+        if(BCrypt.checkpw(password, user.getPassword())){
+            user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
             userRepository.save(user);
             return dtoMapper.mapToDto(user);
         }else{
@@ -65,7 +65,7 @@ public class UserService {
 
     public UserDto register(RegistrationDto registrationDto) {
         if (registrationDto.firstName().isEmpty() || registrationDto.lastName().isEmpty() ||
-                registrationDto.email().isEmpty() || registrationDto.passw().isEmpty()) {
+                registrationDto.email().isEmpty() || registrationDto.password().isEmpty()) {
             throw new CustomomizeException("Empty user data");
         }
         if (userRepository.existsByEmail(registrationDto.email())) {
@@ -76,14 +76,14 @@ public class UserService {
     }
 
     public User userPreparation(User user){
-        user.setPassw(BCrypt.hashpw(user.getPassw(), BCrypt.gensalt()));
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userRepository.save(user);
         return user;
     }
 
     public UserDto login(CredentialsDto credentialsDto) {
         return dtoMapper.mapToDto(userRepository.findByEmail(credentialsDto.email())
-                .filter(user->BCrypt.checkpw(credentialsDto.passw(), user.getPassw()))
+                .filter(user->BCrypt.checkpw(credentialsDto.password(), user.getPassword()))
                 .orElseThrow(()->new CustomomizeException("Incorect email or password")));
     }
 }
