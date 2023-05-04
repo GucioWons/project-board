@@ -1,4 +1,4 @@
-package com.example.user.Models;
+package com.example.user.dto;
 import java.util.Objects;
 
 public record RegistrationDto(String firstName, String lastName, String email, String password) {

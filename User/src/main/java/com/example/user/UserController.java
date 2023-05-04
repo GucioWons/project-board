@@ -1,9 +1,8 @@
-package com.example.user.Controller;
+package com.example.user;
 
-import com.example.user.Models.CredentialsDto;
-import com.example.user.Models.RegistrationDto;
-import com.example.user.Models.UserDto;
-import com.example.user.Service.UserService;
+import com.example.user.dto.CredentialsDto;
+import com.example.user.dto.RegistrationDto;
+import com.example.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

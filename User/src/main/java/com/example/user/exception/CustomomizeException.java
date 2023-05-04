@@ -1,4 +1,4 @@
-package com.example.user.Exceptions;
+package com.example.user.exception;
 
 public class CustomomizeException extends RuntimeException {
     public CustomomizeException(String warning){

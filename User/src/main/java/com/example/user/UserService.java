@@ -1,13 +1,11 @@
-package com.example.user.Service;
+package com.example.user;
 
 import com.example.user.mapper.RegToUserMapper;
 import com.example.user.mapper.UserToDtoMapper;
-import com.example.user.Repository.UserRepository;
-import com.example.user.Exceptions.CustomomizeException;
-import com.example.user.Models.CredentialsDto;
-import com.example.user.Models.RegistrationDto;
-import com.example.user.Models.User;
-import com.example.user.Models.UserDto;
+import com.example.user.exception.CustomomizeException;
+import com.example.user.dto.CredentialsDto;
+import com.example.user.dto.RegistrationDto;
+import com.example.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;

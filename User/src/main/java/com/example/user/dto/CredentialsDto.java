@@ -1,4 +1,4 @@
-package com.example.user.Models;
+package com.example.user.dto;
 
 import java.util.Objects;
 
