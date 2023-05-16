@@ -81,7 +81,7 @@ public class CrewService {
     }
 
     private Crew changeLeaderIfNotTheSame(Crew crew, Integer userId){
-        if(crew.getLeader().equals(userId)){
+        if(!crew.getLeader().equals(userId)){
             crew.setLeader(userId);
             return crewRepository.save(crew);
         }else{
