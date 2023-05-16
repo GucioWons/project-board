@@ -18,6 +18,7 @@ public class Crew {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private Integer leader;
     @ManyToMany
     private Set<Category> categories;
     @ElementCollection
