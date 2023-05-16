@@ -1,5 +1,6 @@
 package project.board.crew.logic.structure.crew;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,14 +9,11 @@ import project.board.crew.logic.structure.category.Category;
 import java.util.List;
 import java.util.Set;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/crews")
 public class CrewController {
     private final CrewService crewService;
-    public CrewController(CrewService crewService)
-    {
-        this.crewService = crewService;
-    }
 
     @GetMapping()
     public ResponseEntity<List<Crew>> getCrewsList() {
@@ -82,9 +80,9 @@ public class CrewController {
     }
 
     @PostMapping(value = "/leader", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Crew> changeLeader(@RequestParam Integer crewId, @RequestParam Integer userId){
+    public ResponseEntity<Crew> updateLeader(@RequestParam Integer crewId, @RequestParam Integer userId){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(crewService.changeLeader(crewId, userId));
+                .body(crewService.updateLeader(crewId, userId));
     }
 }

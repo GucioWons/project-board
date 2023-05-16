@@ -1,23 +1,19 @@
 package project.board.crew.logic.structure.crew;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import project.board.crew.logic.exceptions.NoCrewException;
-import project.board.crew.logic.exceptions.SameLeaderException;
+import project.board.crew.logic.exceptions.*;
 import project.board.crew.logic.structure.category.Category;
 import project.board.crew.logic.structure.category.CategoryService;
 import java.util.List;
 import java.util.Set;
 
+@RequiredArgsConstructor
 @Service
 public class CrewService {
 
     private final CrewRepository crewRepository;
     private final CategoryService categoryService;
-
-    public CrewService(CrewRepository crewRepository, CategoryService categoryService) {
-        this.crewRepository = crewRepository;
-        this.categoryService = categoryService;
-    }
 
     public List<Crew> getCrews() {
         return crewRepository.findAll();
@@ -36,11 +32,19 @@ public class CrewService {
     }
 
     public Crew assignMember(Integer crewId, Integer memberId) {
-        return crewRepository.findById(crewId).map(crew -> {
-                    crew.getMembers().add(memberId);
-                    return crewRepository.save(crew);
-                }).orElseThrow(() -> new NoCrewException("Crew doesnt exist"));
+        return crewRepository.findById(crewId)
+                .map(crew -> addMember(crew, memberId))
+                .orElseThrow(() -> new NoCrewException("Crew doesnt exist"));
 
+    }
+
+    private Crew addMember(Crew crew, Integer memberId){
+        if(!crew.getLeader().equals(memberId)){
+            crew.getMembers().add(memberId);
+            return crewRepository.save(crew);
+        }else{
+            throw new UserIsLeaderException("That user is already leader of this crew");
+        }
     }
 
     public Crew assignCategory(Integer crewId, Long categoryId) {
@@ -51,8 +55,7 @@ public class CrewService {
                 ).orElseThrow(() -> new NoCrewException("Crew doesnt exist"));
     }
 
-    public Crew getCrewById(Integer crewId)
-    {
+    public Crew getCrewById(Integer crewId) {
         return crewRepository.findById(crewId)
                 .orElseThrow(() -> new NoCrewException("Crew doesnt exist"));
     }
@@ -62,8 +65,7 @@ public class CrewService {
                 .orElseThrow(() -> new NoCrewException("Crew doesnt exist"));
     }
 
-    public Crew create(Crew crew)
-    {
+    public Crew create(Crew crew) {
         return crewRepository.save(crew);
     }
 
@@ -74,18 +76,28 @@ public class CrewService {
                 }).orElseThrow(() -> new NoCrewException("Crew doesnt exist"));
     }
 
-    public Crew changeLeader(Integer crewId, Integer userId){
+    public Crew updateLeader(Integer crewId, Integer userId){
         return crewRepository.findById(crewId).map(
-                crew -> changeLeaderIfNotTheSame(crew, userId))
+                crew -> changeLeader(crew, userId))
                 .orElseThrow(() -> new NoCrewException("Crew doesn't exist!"));
     }
 
-    private Crew changeLeaderIfNotTheSame(Crew crew, Integer userId){
+    private Crew changeLeader(Crew crew, Integer userId){
         if(!crew.getLeader().equals(userId)){
+            return promoteMemberToLeader(crew, userId);
+        }else{
+            throw new SameLeaderException("Leader is the same!");
+        }
+    }
+
+    private Crew promoteMemberToLeader(Crew crew, Integer userId){
+        if (crew.getMembers().contains(userId)) {
+            crew.getMembers().remove(userId);
+            crew.getMembers().add(crew.getLeader());
             crew.setLeader(userId);
             return crewRepository.save(crew);
         }else{
-            throw new SameLeaderException("Leader is the same!");
+            throw new UserIsNotMemberException("That user is not member of this crew!");
         }
     }
 }
