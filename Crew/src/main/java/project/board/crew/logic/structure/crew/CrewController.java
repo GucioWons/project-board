@@ -80,4 +80,11 @@ public class CrewController {
                 .status(HttpStatus.OK)
                 .body(crewService.assignCategory(crewId,categoryId));
     }
+
+    @PostMapping(value = "/leader", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Crew> changeLeader(@RequestParam Integer crewId, @RequestParam Integer userId){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(crewService.changeLeader(crewId, userId));
+    }
 }
