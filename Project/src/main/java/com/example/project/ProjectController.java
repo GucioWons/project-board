@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/projects")
@@ -19,7 +21,14 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<Project> getActiveProjects(){
+    public ResponseEntity<Project> getProjectById(@RequestParam Integer projectId){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(projectService.getProjectById(projectId));
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<Project>> getActiveProjects(){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(projectService.getActiveProjects());

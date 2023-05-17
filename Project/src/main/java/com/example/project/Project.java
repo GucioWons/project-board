@@ -18,7 +18,7 @@ public class Project {
     private Integer id;
     private String title;
     private String company;
-    private Integer user;
+    private Integer postedBy;
     private String description;
     private LocalDateTime dateExpire;
     private Integer crew;
