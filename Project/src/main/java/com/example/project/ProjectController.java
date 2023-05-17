@@ -33,4 +33,11 @@ public class ProjectController {
                 .status(HttpStatus.OK)
                 .body(projectService.getActiveProjects());
     }
+
+    @PostMapping("/crew")
+    public ResponseEntity<Project> assignCrew(@RequestParam Integer projectId, @RequestParam Integer crewId){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(projectService.assignCrew(projectId, crewId));
+    }
 }
